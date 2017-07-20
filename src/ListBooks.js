@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 class ListBooks extends Component {
 	render() {
-    	const { books } = this.props
+    	const { books, location } = this.props
 
 	    books.sort(sortBy('shelf'))
 
@@ -61,9 +61,11 @@ class ListBooks extends Component {
               </div>
             </div>
 
-            <div className="open-search">
-               <Link to="/search">Add a book</Link>
-             </div>
+            {(location.pathname !== '/search' &&
+            	<div className="open-search">
+               		<Link to="/search">Add a book</Link>
+             	</div>
+            )}
 
           </div>
 	)}

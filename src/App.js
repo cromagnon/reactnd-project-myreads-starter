@@ -41,6 +41,10 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelf);
   }
 
+  clearQuery = () => {
+    this.setState({query: ''})
+  }
+
   render() {
 
     const { query, books } = this.state
@@ -56,24 +60,24 @@ class BooksApp extends React.Component {
 
     return (
       <div className="app">
-      <Route path="/" render={() => (
+      <Route exact path="/" render={({location}) => (
           <div className="list-books">
             <div className="list-books-results">
-              <ListBooks books={bookResults} onChangeBookShelf={this.changeBookShelf} />
+              <ListBooks books={bookResults} onChangeBookShelf={this.changeBookShelf} location={location} />
             </div>
           </div>
         )}/>
 
-      <Route path="/search" render={() => (
+      <Route path="/search" render={({location}) => (
           <div className="search-books">
             <div className="search-books-bar">
-              <Link to="/" className="close-search">Close</Link>
+              <Link to="/" className="close-search" onClick={this.clearQuery}>Close</Link>
               <div className="search-books-input-wrapper">
                 <input type="text" value={query} onChange={(e) => (this.updateQuery(e.target.value))} placeholder="Search by title or author"/>
               </div>
             </div>
             <div className="search-books-results">
-                <ListBooks books={bookResults} onChangeBookShelf={this.changeBookShelf} />
+                <ListBooks books={bookResults} onChangeBookShelf={this.changeBookShelf} location={location} />
             </div>
           </div>
       )} />
