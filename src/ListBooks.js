@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import sortBy from 'sort-by'
-import Book from './Book'
+import BookItem from './BookItem'
 
 
 class ListBooks extends Component {
@@ -18,6 +18,24 @@ class ListBooks extends Component {
 		let wantToReadBooks
 	    wantToReadBooks = books.filter((book) => book.shelf === 'wantToRead')
 
+	    let sortedBookShelves = [
+	    	{
+	    		key: 'currentlyReading',
+	    		text: 'Currently Reading',
+	    		books: currentlyReadingBooks
+	    	},
+			{
+	    		key: 'wantToRead',
+	    		text: 'Want to Read',
+	    		books: wantToReadBooks
+	    	},
+	    	{
+	    		key: 'read',
+	    		text: 'Read',
+	    		books: readBooks
+	    	}
+	    ]
+
 		return (
 			<div className="list-books">
             <div className="list-books-title">
@@ -26,38 +44,18 @@ class ListBooks extends Component {
             <div className="list-books-content">
               <div>
 
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-					{currentlyReadingBooks.map((book) => (
-						<Book key={book.id} book={book} />
-					))}
-                    </ol>
-                  </div>
-                </div>
-
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-					{wantToReadBooks.map((book) => (
-						<Book key={book.id} book={book} />
-					))}
-                    </ol>
-                  </div>
-                </div>
-
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-					{readBooks.map((book) => (
-						<Book key={book.id} book={book} />
-					))}
-                    </ol>
-                  </div>
-                </div>
+              	{sortedBookShelves.map(shelves => (
+					<div key={shelves.key} className="bookshelf">
+	                  <h2 className="bookshelf-title">{shelves.text}</h2>
+	                  <div className="bookshelf-books">
+	                    <ol className="books-grid">
+						{shelves.books.map((book) => (
+							<BookItem key={book.id} book={book} onChangeBookShelf={this.props.onChangeBookShelf} />
+						))}
+	                    </ol>
+	                  </div>
+	                </div>
+                ))}
 
               </div>
             </div>
