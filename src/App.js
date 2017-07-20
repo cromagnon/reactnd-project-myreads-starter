@@ -2,6 +2,8 @@ import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import ListBooks from './ListBooks'
+import { Route, Link } from 'react-router-dom'
+import escapeRegExp from 'escape-string-regexp'
 
 class BooksApp extends React.Component {
   state = {
@@ -11,8 +13,13 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    showSearchPage: true,
-    books: []
+    showSearchPage: false,
+    books: [],
+    query: ''
+  }
+
+  updateQuery = (query) => {
+    this.setState({ query: query.trim() })
   }
 
   componentDidMount() {
@@ -36,26 +43,40 @@ class BooksApp extends React.Component {
 
   render() {
 
+    const { query, books } = this.state
+
+    let bookResults = books
+
+    if (query) {
+      const match = new RegExp(escapeRegExp(query), 'i')
+      bookResults = books.filter((b) => (
+        match.test(b.authors.join()) || match.test(b.title)
+      ))
+    }
+
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <div className="search-books">
-            <div className="search-books-bar">
-              <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
-              <div className="search-books-input-wrapper">
-                <input type="text" placeholder="Search by title or author"/>
-              </div>
-            </div>
-            <div className="">
-              <ListBooks books={this.state.books} onChangeBookShelf={this.changeBookShelf} />
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
+      <Route path="/" render={() => (
+          <div className="list-books">
+            <div className="list-books-results">
+              <ListBooks books={bookResults} onChangeBookShelf={this.changeBookShelf} />
             </div>
           </div>
-        ) : (
-          <div>blah</div>
-        )}
+        )}/>
+
+      <Route path="/search" render={() => (
+          <div className="search-books">
+            <div className="search-books-bar">
+              <Link to="/" className="close-search">Close</Link>
+              <div className="search-books-input-wrapper">
+                <input type="text" value={query} onChange={(e) => (this.updateQuery(e.target.value))} placeholder="Search by title or author"/>
+              </div>
+            </div>
+            <div className="search-books-results">
+                <ListBooks books={bookResults} onChangeBookShelf={this.changeBookShelf} />
+            </div>
+          </div>
+      )} />
       </div>
     )
   }
