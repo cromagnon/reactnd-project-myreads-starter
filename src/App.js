@@ -60,12 +60,22 @@ class BooksApp extends React.Component {
     this.setState({query: ''})
   }
 
+  /**
+  * @description Populates Select dropdown options text and values.
+  * @return {array} shelfOptions
+  */
   getShelfOptions = () => {
     return BOOK_SHELF_DATA.map((shelf) => {
       return Object.assign({disabled: shelf.key === 'moveTo'}, shelf)
     })
   }
 
+  /**
+  * @description Populates header text for bookshelves and books belonging
+                 to the bookshelves. Takes in an unshelved books collection.
+  * @param {array} books
+  * @return {array} bookShelves
+  */
   getBookShelves = (books) => {
     return BOOK_SHELF_DATA.filter((shelf) => shelf.key !== 'moveTo' && shelf.key !== 'none').map((shelf) => {
         return Object.assign({
