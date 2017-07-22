@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 class ListBooks extends Component {
 	render() {
-    	const { location, bookShelves, shelfOptions } = this.props
+    	const { books, location, bookShelves, shelfOptions } = this.props
 
 		return (
 			<div className="list-books">
@@ -14,7 +14,7 @@ class ListBooks extends Component {
             <div className="list-books-content">
               <div>
 
-              	{bookShelves().map(shelf => (
+              	{bookShelves(books).map(shelf => (
 					<div key={shelf.key} className="bookshelf">
 	                  <h2 className="bookshelf-title">{shelf.text}</h2>
 	                  <div className="bookshelf-books">

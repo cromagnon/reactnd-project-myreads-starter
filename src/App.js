@@ -64,10 +64,10 @@ class BooksApp extends React.Component {
     })
   }
 
-  getBookShelves = () => {
+  getBookShelves = (books) => {
     return BOOK_SHELF_DATA.filter((shelf) => shelf.key !== 'moveTo' && shelf.key !== 'none').map((shelf) => {
         return Object.assign({
-          books: this.state.books.filter((book) => book.shelf === shelf.key)
+          books: books.filter((book) => book.shelf === shelf.key)
         }, shelf)
     })
   }
