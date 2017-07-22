@@ -4,6 +4,7 @@ import './App.css'
 import ListBooks from './ListBooks'
 import { Route, Link } from 'react-router-dom'
 import escapeRegExp from 'escape-string-regexp'
+import BOOK_SHELF_DATA from './BookShelfData'
 
 class BooksApp extends React.Component {
   state = {
@@ -36,7 +37,6 @@ class BooksApp extends React.Component {
   *              Calls backend to update books collection.
   * @param {string} book
   * @param {string} shelf
-  * @returns {number} Sum of a and b
   */
   changeBookShelf = (book, shelf) => {
     this.setState((state) => ({
@@ -58,6 +58,20 @@ class BooksApp extends React.Component {
     this.setState({query: ''})
   }
 
+  getShelfOptions = () => {
+    return BOOK_SHELF_DATA.map((shelf) => {
+      return Object.assign({disabled: shelf.key === 'moveTo'}, shelf)
+    })
+  }
+
+  getBookShelves = () => {
+    return BOOK_SHELF_DATA.filter((shelf) => shelf.key !== 'moveTo' && shelf.key !== 'none').map((shelf) => {
+        return Object.assign({
+          books: this.state.books.filter((book) => book.shelf === shelf.key)
+        }, shelf)
+    })
+  }
+
   render() {
 
     const { query, books } = this.state
@@ -76,7 +90,7 @@ class BooksApp extends React.Component {
         <Route exact path="/" render={({location}) => (
             <div className="list-books">
               <div className="list-books-results">
-                <ListBooks books={bookResults} onChangeBookShelf={this.changeBookShelf} location={location} />
+                <ListBooks books={bookResults} bookShelves={this.getBookShelves} shelfOptions={this.getShelfOptions} onChangeBookShelf={this.changeBookShelf} location={location} />
               </div>
             </div>
           )}/>
@@ -90,7 +104,7 @@ class BooksApp extends React.Component {
                 </div>
               </div>
               <div className="search-books-results">
-                  <ListBooks books={bookResults} onChangeBookShelf={this.changeBookShelf} location={location} />
+                  <ListBooks books={bookResults} bookShelves={this.getBookShelves} shelfOptions={this.getShelfOptions} onChangeBookShelf={this.changeBookShelf} location={location} />
               </div>
             </div>
         )} />

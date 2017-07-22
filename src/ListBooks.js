@@ -1,20 +1,10 @@
 import React, { Component } from 'react'
-import sortBy from 'sort-by'
 import BookItem from './BookItem'
 import { Link } from 'react-router-dom'
-import BOOK_SHELF_DATA from './BookShelfData'
 
 class ListBooks extends Component {
 	render() {
-    	const { books, location } = this.props
-
-	    books.sort(sortBy('shelf'))
-
-	    let sortedBookShelves = BOOK_SHELF_DATA.filter((shelf) => shelf.key !== 'moveTo' && shelf.key !== 'none').map((shelf) => {
-	     	return Object.assign({
-	     		books: books.filter((book) => book.shelf === shelf.key)
-	     	}, shelf)
-	     })
+    	const { location, bookShelves, shelfOptions } = this.props
 
 		return (
 			<div className="list-books">
@@ -24,13 +14,13 @@ class ListBooks extends Component {
             <div className="list-books-content">
               <div>
 
-              	{sortedBookShelves.map(shelves => (
-					<div key={shelves.key} className="bookshelf">
-	                  <h2 className="bookshelf-title">{shelves.text}</h2>
+              	{bookShelves().map(shelf => (
+					<div key={shelf.key} className="bookshelf">
+	                  <h2 className="bookshelf-title">{shelf.text}</h2>
 	                  <div className="bookshelf-books">
 	                    <ol className="books-grid">
-						{shelves.books.map((book) => (
-							<BookItem key={book.id} book={book} onChangeBookShelf={this.props.onChangeBookShelf} />
+						{shelf.books.map((book) => (
+							<BookItem key={book.id} book={book} shelfOptions={shelfOptions} onChangeBookShelf={this.props.onChangeBookShelf} />
 						))}
 	                    </ol>
 	                  </div>
