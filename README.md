@@ -11,3 +11,5 @@
 ```
    npm start
 ```
+
+This will launch your browser with http://localhost:3000 as the URL.
