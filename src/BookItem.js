@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
-//import sortBy from 'sort-by'
+import BOOK_SHELF_DATA from './BookShelfData'
 
 class BookItem extends Component {
 	state = {
-		BOOK_SHELF: [{key: 'moveTo', text: 'Move to...', disabled: true},
-	 {key: 'currentlyReading', text: 'Currently Reading'},
-	 {key: 'wantToRead', text: 'Want to Read'},
-	 {key: 'read', text: 'Read'},
-	 {key: 'none', text: 'None'}]
+		bookShelf: []
+	}
+
+	componentDidMount() {
+		let bookShelf = BOOK_SHELF_DATA.map((shelf) => {
+			return Object.assign({disabled: shelf.key === 'moveTo'}, shelf)
+		})
+		this.setState({bookShelf: bookShelf})
 	}
 
 	render() {
@@ -21,7 +24,7 @@ class BookItem extends Component {
                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                 <div className="book-shelf-changer">
                   <select onChange={(e) => this.props.onChangeBookShelf(book, e.target.options[e.target.selectedIndex].value)}>
-                    {this.state.BOOK_SHELF.map((shelf, index) => (
+                    {this.state.bookShelf.map((shelf, index) => (
                     	<option key={index} disabled={shelf.disabled} selected={book.shelf === shelf.key} value={shelf.key}>{shelf.text}</option>
 					))}
                   </select>

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import sortBy from 'sort-by'
 import BookItem from './BookItem'
 import { Link } from 'react-router-dom'
-
+import BOOK_SHELF_DATA from './BookShelfData'
 
 class ListBooks extends Component {
 	render() {
@@ -10,32 +10,11 @@ class ListBooks extends Component {
 
 	    books.sort(sortBy('shelf'))
 
-	    let currentlyReadingBooks
-	    currentlyReadingBooks = books.filter((book) => book.shelf === 'currentlyReading')
-
-	    let readBooks
-	    readBooks = books.filter((book) => book.shelf === 'read')
-
-		let wantToReadBooks
-	    wantToReadBooks = books.filter((book) => book.shelf === 'wantToRead')
-
-	    let sortedBookShelves = [
-	    	{
-	    		key: 'currentlyReading',
-	    		text: 'Currently Reading',
-	    		books: currentlyReadingBooks
-	    	},
-			{
-	    		key: 'wantToRead',
-	    		text: 'Want to Read',
-	    		books: wantToReadBooks
-	    	},
-	    	{
-	    		key: 'read',
-	    		text: 'Read',
-	    		books: readBooks
-	    	}
-	    ]
+	    let sortedBookShelves = BOOK_SHELF_DATA.filter((shelf) => shelf.key !== 'moveTo' && shelf.key !== 'none').map((shelf) => {
+	     	return Object.assign({
+	     		books: books.filter((book) => book.shelf === shelf.key)
+	     	}, shelf)
+	     })
 
 		return (
 			<div className="list-books">
