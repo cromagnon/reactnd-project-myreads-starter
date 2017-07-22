@@ -16,7 +16,7 @@ class BooksApp extends React.Component {
   /**
   * @description Updates query with the user's input. Called each time user
   *              enters text into input box.
-  * @param {string} query
+  * @param {string} query - query input from user
   */
   updateQuery = (query) => {
     this.setState({ query: query.trim() })
@@ -37,8 +37,8 @@ class BooksApp extends React.Component {
   * @description Updates the books collection with a re-shelved book.
   *              Takes book to be re-shelved, and shelf to be re-shelved to.
   *              Calls backend to update books collection.
-  * @param {string} book
-  * @param {string} shelf
+  * @param {string} book - book to be reshelved
+  * @param {string} shelf - shelf to be reshelved to
   */
   changeBookShelf = (book, shelf) => {
     this.setState((state) => ({
@@ -62,7 +62,7 @@ class BooksApp extends React.Component {
 
   /**
   * @description Populates Select dropdown options text and values.
-  * @return {array} shelfOptions
+  * @return {array} shelfOptions - Book shelf options
   */
   getShelfOptions = () => {
     return BOOK_SHELF_DATA.map((shelf) => {
@@ -73,8 +73,8 @@ class BooksApp extends React.Component {
   /**
   * @description Populates header text for bookshelves and books belonging
                  to the bookshelves. Takes in an unshelved books collection.
-  * @param {array} books
-  * @return {array} bookShelves
+  * @param {array} books - Unshelved/uncategorized books collection
+  * @return {array} bookShelves - Bookshelves with headers and categorized books
   */
   getBookShelves = (books) => {
     return BOOK_SHELF_DATA.filter((shelf) => shelf.key !== 'moveTo' && shelf.key !== 'none').map((shelf) => {
