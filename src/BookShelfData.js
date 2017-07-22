@@ -19,6 +19,6 @@ const BOOK_SHELF_DATA = [
 		key: 'none',
 		text: 'None'
 	}
-]
+];
 
-export default BOOK_SHELF_DATA
+export default BOOK_SHELF_DATA;

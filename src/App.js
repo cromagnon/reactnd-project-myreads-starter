@@ -1,17 +1,17 @@
-import React from 'react'
-import * as BooksAPI from './BooksAPI'
-import './App.css'
-import ListBooks from './ListBooks'
-import { Route, Link } from 'react-router-dom'
-import escapeRegExp from 'escape-string-regexp'
-import BOOK_SHELF_DATA from './BookShelfData'
-import sortBy from 'sort-by'
+import React from 'react';
+import * as BooksAPI from './BooksAPI';
+import './App.css';
+import ListBooks from './ListBooks';
+import { Route, Link } from 'react-router-dom';
+import escapeRegExp from 'escape-string-regexp';
+import BOOK_SHELF_DATA from './BookShelfData';
+import sortBy from 'sort-by';
 
 class BooksApp extends React.Component {
   state = {
     books: [],
     query: ''
-  }
+  };
 
   /**
   * @description Updates query with the user's input. Called each time user
@@ -20,7 +20,7 @@ class BooksApp extends React.Component {
   */
   updateQuery = (query) => {
     this.setState({ query: query.trim() })
-  }
+  };
 
   /**
   * @description Updates books collection with the one fetched from the
@@ -48,7 +48,7 @@ class BooksApp extends React.Component {
         }
         return b
       })
-    }))
+    }));
 
     BooksAPI.update(book, shelf);
   }
@@ -57,7 +57,7 @@ class BooksApp extends React.Component {
   * @description Clears the state query variable
   */
   clearQuery = () => {
-    this.setState({query: ''})
+    this.setState({query: ''});
   }
 
   /**
@@ -67,7 +67,7 @@ class BooksApp extends React.Component {
   getShelfOptions = () => {
     return BOOK_SHELF_DATA.map((shelf) => {
       return Object.assign({disabled: shelf.key === 'moveTo'}, shelf)
-    })
+    });
   }
 
   /**
@@ -81,20 +81,20 @@ class BooksApp extends React.Component {
         return Object.assign({
           books: books.filter((book) => book.shelf === shelf.key)
         }, shelf)
-    })
+    });
   }
 
   render() {
 
-    const { query, books } = this.state
+    const { query, books } = this.state;
 
-    let bookResults = books
+    let bookResults = books;
 
     if (query) {
       const match = new RegExp(escapeRegExp(query), 'i')
       bookResults = books.filter((b) => (
         match.test(b.authors.join()) || match.test(b.title)
-      ))
+      ));
     }
 
     return (
@@ -121,8 +121,8 @@ class BooksApp extends React.Component {
             </div>
         )} />
       </div>
-    )
+    );
   }
 }
 
-export default BooksApp
+export default BooksApp;

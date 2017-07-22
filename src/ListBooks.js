@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import BookItem from './BookItem'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import BookItem from './BookItem';
+import { Link } from 'react-router-dom';
 
 class ListBooks extends Component {
 	render() {
-    	const { books, location, bookShelves, shelfOptions } = this.props
+    	const { books, location, bookShelves, shelfOptions } = this.props;
 
 		return (
 			<div className="list-books">
@@ -37,8 +37,8 @@ class ListBooks extends Component {
             )}
 
           </div>
-	)}
-
+		);
+	}
 }
 
-export default ListBooks
+export default ListBooks;

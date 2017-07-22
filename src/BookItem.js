@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class BookItem extends Component {
 	render() {
 
-		const { book, onChangeBookShelf, shelfOptions } = this.props
+		const { book, onChangeBookShelf, shelfOptions } = this.props;
 
 		return (
           <li>
@@ -22,8 +22,8 @@ class BookItem extends Component {
               <div className="book-authors">{book.authors.join(", ")}</div>
             </div>
           </li>
-		)
+		);
 	}
 }
 
-export default BookItem
+export default BookItem;
