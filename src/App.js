@@ -5,6 +5,7 @@ import ListBooks from './ListBooks'
 import { Route, Link } from 'react-router-dom'
 import escapeRegExp from 'escape-string-regexp'
 import BOOK_SHELF_DATA from './BookShelfData'
+import sortBy from 'sort-by'
 
 class BooksApp extends React.Component {
   state = {
@@ -27,6 +28,7 @@ class BooksApp extends React.Component {
   */
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
+      books.sort(sortBy('title'))
       this.setState({books})
     });
   }
