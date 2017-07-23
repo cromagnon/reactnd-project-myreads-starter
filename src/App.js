@@ -112,7 +112,7 @@ class BooksApp extends React.Component {
               <div className="search-books-bar">
                 <Link to="/" className="close-search" onClick={this.clearQuery}>Close</Link>
                 <div className="search-books-input-wrapper">
-                  <input type="text" value={query} onChange={(e) => (this.updateQuery(e.target.value))} placeholder="Search by title or author"/>
+                  <input type="text" value={query} autoFocus onChange={(e) => (this.updateQuery(e.target.value))} placeholder="Search by title or author"/>
                 </div>
               </div>
               <div className="search-books-results">
