@@ -119,7 +119,7 @@ class BooksApp extends React.Component {
                   <ListBooks books={bookResults} bookShelves={this.getBookShelves} shelfOptions={this.getShelfOptions} onChangeBookShelf={this.changeBookShelf} location={location} />
               </div>
             </div>
-        )} />
+        )}/>
       </div>
     );
   }

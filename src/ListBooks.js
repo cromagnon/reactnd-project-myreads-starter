@@ -13,7 +13,6 @@ class ListBooks extends Component {
             </div>
             <div className="list-books-content">
               <div>
-
               	{bookShelves(books).map(shelf => (
 					<div key={shelf.key} className="bookshelf">
 	                  <h2 className="bookshelf-title">{shelf.text}</h2>
@@ -26,7 +25,6 @@ class ListBooks extends Component {
 	                  </div>
 	                </div>
                 ))}
-
               </div>
             </div>
 
@@ -35,7 +33,6 @@ class ListBooks extends Component {
                		<Link to="/search">Add a book</Link>
              	</div>
             )}
-
           </div>
 		);
 	}
