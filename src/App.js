@@ -1,26 +1,18 @@
 import React from 'react';
+import { Route, Link } from 'react-router-dom';
+import escapeRegExp from 'escape-string-regexp';
+import sortBy from 'sort-by';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
 import ListBooks from './ListBooks';
-import { Route, Link } from 'react-router-dom';
-import escapeRegExp from 'escape-string-regexp';
+import SearchBooks from './SearchBooks';
 import BOOK_SHELF_DATA from './BookShelfData';
-import sortBy from 'sort-by';
 
 class BooksApp extends React.Component {
   state = {
     books: [],
-    query: ''
-  };
-
-  /**
-  * @description Updates query with the user's input. Called each time user
-  *              enters text into input box.
-  * @param {string} query - query input from user
-  */
-  updateQuery = (query) => {
-    this.setState({ query: query.trim() })
-  };
+    query: '',
+  }
 
   /**
   * @description Updates books collection with the one fetched from the
@@ -28,10 +20,35 @@ class BooksApp extends React.Component {
   */
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-      books.sort(sortBy('title'))
-      this.setState({books})
+      books.sort(sortBy('title'));
+      this.setState({ books });
     });
   }
+
+  /**
+  * @description Populates Select dropdown options text and values.
+  * @return {array} shelfOptions - Book shelf options
+  */
+  getShelfOptions = () => BOOK_SHELF_DATA.map(shelf => Object.assign({ disabled: shelf.key === 'moveTo' }, shelf))
+
+  /**
+  * @description Populates header text for bookshelves and books belonging
+                 to the bookshelves. Takes in an unshelved books collection.
+  * @param {array} books - Unshelved/uncategorized books collection
+  * @return {array} bookShelves - Bookshelves with headers and categorized books
+  */
+  getBookShelves = books => BOOK_SHELF_DATA.filter(shelf => shelf.key !== 'moveTo' && shelf.key !== 'none').map(shelf => Object.assign({
+    books: books.filter(book => book.shelf === shelf.key),
+  }, shelf))
+
+  /**
+  * @description Updates query with the user's input. Called each time user
+  *              enters text into input box.
+  * @param {string} query - query input from user
+  */
+  updateQuery = (query) => {
+    this.setState({ query: query.trim() });
+  };
 
   /**
   * @description Updates the books collection with a re-shelved book.
@@ -41,13 +58,14 @@ class BooksApp extends React.Component {
   * @param {string} shelf - shelf to be reshelved to
   */
   changeBookShelf = (book, shelf) => {
-    this.setState((state) => ({
+    this.setState(state => ({
       books: state.books.map((b) => {
-        if (b.id === book.id) {
-          b.shelf = shelf
+        const foundBook = b;
+        if (foundBook.id === book.id) {
+          foundBook.shelf = shelf;
         }
-        return b
-      })
+        return foundBook;
+      }),
     }));
 
     BooksAPI.update(book, shelf);
@@ -57,69 +75,69 @@ class BooksApp extends React.Component {
   * @description Clears the state query variable
   */
   clearQuery = () => {
-    this.setState({query: ''});
-  }
-
-  /**
-  * @description Populates Select dropdown options text and values.
-  * @return {array} shelfOptions - Book shelf options
-  */
-  getShelfOptions = () => {
-    return BOOK_SHELF_DATA.map((shelf) => {
-      return Object.assign({disabled: shelf.key === 'moveTo'}, shelf)
-    });
-  }
-
-  /**
-  * @description Populates header text for bookshelves and books belonging
-                 to the bookshelves. Takes in an unshelved books collection.
-  * @param {array} books - Unshelved/uncategorized books collection
-  * @return {array} bookShelves - Bookshelves with headers and categorized books
-  */
-  getBookShelves = (books) => {
-    return BOOK_SHELF_DATA.filter((shelf) => shelf.key !== 'moveTo' && shelf.key !== 'none').map((shelf) => {
-        return Object.assign({
-          books: books.filter((book) => book.shelf === shelf.key)
-        }, shelf)
-    });
+    this.setState({ query: '' });
   }
 
   render() {
-
     const { query, books } = this.state;
 
     let bookResults = books;
 
     if (query) {
-      const match = new RegExp(escapeRegExp(query), 'i')
-      bookResults = books.filter((b) => (
+      const match = new RegExp(escapeRegExp(query), 'i');
+      bookResults = books.filter(b => (
         match.test(b.authors.join()) || match.test(b.title)
       ));
     }
 
     return (
       <div className="app">
-        <Route exact path="/" render={({location}) => (
+        <Route
+          exact
+          path="/"
+          render={({ location }) => (
             <div className="list-books">
               <div className="list-books-results">
-                <ListBooks books={bookResults} bookShelves={this.getBookShelves} shelfOptions={this.getShelfOptions} onChangeBookShelf={this.changeBookShelf} location={location} />
+                <ListBooks
+                  books={bookResults}
+                  bookShelves={this.getBookShelves}
+                  shelfOptions={this.getShelfOptions}
+                  onChangeBookShelf={this.changeBookShelf}
+                  location={location}
+                />
               </div>
             </div>
-          )}/>
+          )}
+        />
 
-        <Route path="/search" render={({location}) => (
+        <Route
+          path="/search"
+          render={({ location }) => (
             <div className="search-books">
               <div className="search-books-bar">
                 <Link to="/" className="close-search" onClick={this.clearQuery}>Close</Link>
                 <div className="search-books-input-wrapper">
-                  <input type="text" value={query} autoFocus onChange={(e) => (this.updateQuery(e.target.value))} placeholder="Search by title or author"/>
+                  <input
+                    type="text"
+                    value={query}
+                    autoFocus
+                    onChange={e => (this.updateQuery(e.target.value))}
+                    placeholder="Search by title or author"
+                  />
                 </div>
               </div>
               <div className="search-books-results">
-                  <ListBooks books={bookResults} bookShelves={this.getBookShelves} shelfOptions={this.getShelfOptions} onChangeBookShelf={this.changeBookShelf} location={location} />
+                <SearchBooks
+                  books={bookResults}
+                  bookShelves={this.getBookShelves}
+                  shelfOptions={this.getShelfOptions}
+                  onChangeBookShelf={this.changeBookShelf}
+                  location={location}
+                />
               </div>
             </div>
-        )}/>
+          )}
+        />
       </div>
     );
   }
