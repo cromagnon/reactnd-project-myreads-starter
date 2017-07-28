@@ -21,7 +21,6 @@ const BookItem = (props) => {
               onChange={e =>
                 onChangeBookShelf(book,
                   e.target.options[e.target.selectedIndex].value)}
-              defaultValue="moveTo"
             >
               {shelfOptions().map(shelf => (
                 <option
