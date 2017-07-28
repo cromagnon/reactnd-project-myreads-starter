@@ -10,12 +10,18 @@ const BookItem = (props) => {
         <div className="book-top">
           <div
             className="book-cover"
-            style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}
+            style={{
+              width: 128,
+              height: 193,
+              backgroundImage: `url(${book.imageLinks.thumbnail})`,
+            }}
           />
           <div className="book-shelf-changer">
             <select
               onChange={e =>
-                onChangeBookShelf(book, e.target.options[e.target.selectedIndex].value)}
+                onChangeBookShelf(book,
+                  e.target.options[e.target.selectedIndex].value)}
+              defaultValue="moveTo"
             >
               {shelfOptions().map(shelf => (
                 <option
@@ -38,9 +44,9 @@ const BookItem = (props) => {
 };
 
 BookItem.propTypes = {
-  book: PropTypes.shape.isRequired,
+  book: PropTypes.shape(PropTypes.object).isRequired,
   onChangeBookShelf: PropTypes.func.isRequired,
-  shelfOptions: PropTypes.arrayOf.isRequired,
+  shelfOptions: PropTypes.func.isRequired,
 };
 
 export default BookItem;

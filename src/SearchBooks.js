@@ -35,9 +35,9 @@ const SearchBooks = (props) => {
 };
 
 SearchBooks.propTypes = {
-  books: PropTypes.arrayOf.isRequired,
-  shelfOptions: PropTypes.arrayOf.isRequired,
-  bookShelves: PropTypes.arrayOf.isRequired,
+  books: PropTypes.arrayOf(PropTypes.object).isRequired,
+  shelfOptions: PropTypes.func.isRequired,
+  bookShelves: PropTypes.func.isRequired,
 };
 
 export default SearchBooks;

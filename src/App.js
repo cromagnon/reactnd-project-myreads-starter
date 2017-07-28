@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
-import escapeRegExp from 'escape-string-regexp';
 import sortBy from 'sort-by';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
@@ -29,17 +28,21 @@ class BooksApp extends React.Component {
   * @description Populates Select dropdown options text and values.
   * @return {array} shelfOptions - Book shelf options
   */
-  getShelfOptions = () => BOOK_SHELF_DATA.map(shelf => Object.assign({ disabled: shelf.key === 'moveTo' }, shelf))
+  getShelfOptions = () => BOOK_SHELF_DATA
+    .map(shelf => Object.assign({ disabled: shelf.key === 'moveTo' }, shelf))
 
   /**
   * @description Populates header text for bookshelves and books belonging
                  to the bookshelves. Takes in an unshelved books collection.
   * @param {array} books - Unshelved/uncategorized books collection
-  * @return {array} bookShelves - Bookshelves with headers and categorized books
+  * @return {array} bookShelves - Bookshelves with headers and categorized
+                    books
   */
-  getBookShelves = books => BOOK_SHELF_DATA.filter(shelf => shelf.key !== 'moveTo' && shelf.key !== 'none').map(shelf => Object.assign({
-    books: books.filter(book => book.shelf === shelf.key),
-  }, shelf))
+  getBookShelves = books => BOOK_SHELF_DATA
+    .filter(shelf => shelf.key !== 'moveTo' && shelf.key !== 'none')
+    .map(shelf => Object.assign({
+      books: books.filter(book => book.shelf === shelf.key),
+    }, shelf))
 
   /**
   * @description Updates query with the user's input. Called each time user
@@ -48,6 +51,10 @@ class BooksApp extends React.Component {
   */
   updateQuery = (query) => {
     this.setState({ query: query.trim() });
+    BooksAPI.search(query, 0).then((books) => {
+      books.sort(sortBy('title'));
+      this.setState({ books });
+    });
   };
 
   /**
@@ -81,29 +88,19 @@ class BooksApp extends React.Component {
   render() {
     const { query, books } = this.state;
 
-    let bookResults = books;
-
-    if (query) {
-      const match = new RegExp(escapeRegExp(query), 'i');
-      bookResults = books.filter(b => (
-        match.test(b.authors.join()) || match.test(b.title)
-      ));
-    }
-
     return (
       <div className="app">
         <Route
           exact
           path="/"
-          render={({ location }) => (
+          render={() => (
             <div className="list-books">
               <div className="list-books-results">
                 <ListBooks
-                  books={bookResults}
+                  books={books}
                   bookShelves={this.getBookShelves}
                   shelfOptions={this.getShelfOptions}
                   onChangeBookShelf={this.changeBookShelf}
-                  location={location}
                 />
               </div>
             </div>
@@ -112,10 +109,16 @@ class BooksApp extends React.Component {
 
         <Route
           path="/search"
-          render={({ location }) => (
+          render={() => (
             <div className="search-books">
               <div className="search-books-bar">
-                <Link to="/" className="close-search" onClick={this.clearQuery}>Close</Link>
+                <Link
+                  to="/"
+                  className="close-search"
+                  onClick={this.clearQuery}
+                >
+                  Close
+                </Link>
                 <div className="search-books-input-wrapper">
                   <input
                     type="text"
@@ -128,11 +131,10 @@ class BooksApp extends React.Component {
               </div>
               <div className="search-books-results">
                 <SearchBooks
-                  books={bookResults}
+                  books={books}
                   bookShelves={this.getBookShelves}
                   shelfOptions={this.getShelfOptions}
                   onChangeBookShelf={this.changeBookShelf}
-                  location={location}
                 />
               </div>
             </div>
