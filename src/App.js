@@ -47,7 +47,7 @@ class BooksApp extends React.Component {
 
   /**
   * @description Updates query with the user's input. Called each time user
-  *              enters text into input box.
+  *              enters text into input box. Does backend search.
   * @param {string} query - query input from user
   */
   updateQuery = (query) => {
@@ -87,10 +87,16 @@ class BooksApp extends React.Component {
   }
 
   /**
-  * @description Clears the state query variable
+  * @description Clears the state query variable, and searchResults
+                 Fetches books from the backend.
+
   */
   clearQuery = () => {
-    this.setState({ query: '' });
+    this.setState({ query: '', searchResults: [] });
+    BooksAPI.getAll().then((books) => {
+      books.sort(sortBy('title'));
+      this.setState({ books });
+    });
   }
 
   render() {
