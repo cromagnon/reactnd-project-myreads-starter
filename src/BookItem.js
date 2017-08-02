@@ -43,9 +43,13 @@ const BookItem = (props) => {
 };
 
 BookItem.propTypes = {
-  book: PropTypes.shape(PropTypes.object).isRequired,
+  book: PropTypes.shape(PropTypes.object),
   onChangeBookShelf: PropTypes.func.isRequired,
   shelfOptions: PropTypes.func.isRequired,
+};
+
+BookItem.defaultProps = {
+  book: {},
 };
 
 export default BookItem;

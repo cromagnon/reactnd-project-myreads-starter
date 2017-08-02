@@ -11,6 +11,7 @@ class BooksApp extends React.Component {
   state = {
     books: [],
     query: '',
+    searchResults: [],
   }
 
   /**
@@ -51,9 +52,12 @@ class BooksApp extends React.Component {
   */
   updateQuery = (query) => {
     this.setState({ query: query.trim() });
-    BooksAPI.search(query, 0).then((books) => {
-      books.sort(sortBy('title'));
-      this.setState({ books });
+
+    BooksAPI.search(query, 0).then((searchResults) => {
+      if (searchResults.error || searchResults.items) {
+        return;
+      }
+      this.setState({ searchResults });
     });
   };
 
@@ -65,6 +69,10 @@ class BooksApp extends React.Component {
   * @param {string} shelf - shelf to be reshelved to
   */
   changeBookShelf = (book, shelf) => {
+    if (shelf === 'none' || shelf === 'moveTo') {
+      return;
+    }
+
     this.setState(state => ({
       books: state.books.map((b) => {
         const foundBook = b;
@@ -86,7 +94,7 @@ class BooksApp extends React.Component {
   }
 
   render() {
-    const { query, books } = this.state;
+    const { query, books, searchResults } = this.state;
 
     return (
       <div className="app">
@@ -131,7 +139,7 @@ class BooksApp extends React.Component {
               </div>
               <div className="search-books-results">
                 <SearchBooks
-                  books={books}
+                  books={searchResults}
                   bookShelves={this.getBookShelves}
                   shelfOptions={this.getShelfOptions}
                   onChangeBookShelf={this.changeBookShelf}

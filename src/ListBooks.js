@@ -41,9 +41,13 @@ const ListBooks = (props) => {
 };
 
 ListBooks.propTypes = {
-  books: PropTypes.arrayOf(PropTypes.object).isRequired,
+  books: PropTypes.arrayOf(PropTypes.object),
   bookShelves: PropTypes.func.isRequired,
   shelfOptions: PropTypes.func.isRequired,
+};
+
+ListBooks.defaultProps = {
+  books: [],
 };
 
 export default ListBooks;
