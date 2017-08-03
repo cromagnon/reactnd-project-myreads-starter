@@ -21,12 +21,12 @@ const BookItem = (props) => {
               onChange={e =>
                 onChangeBookShelf(book,
                   e.target.options[e.target.selectedIndex].value)}
+              value={book.shelf}
             >
               {shelfOptions().map(shelf => (
                 <option
                   key={shelf.key}
                   disabled={shelf.disabled}
-                  selected={book.shelf === shelf.key}
                   value={shelf.key}
                 >
                   {shelf.text}
