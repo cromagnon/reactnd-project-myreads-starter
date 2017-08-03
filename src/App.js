@@ -93,10 +93,10 @@ class BooksApp extends React.Component {
   */
   clearQuery = () => {
     this.setState({ query: '', searchResults: [] });
-    BooksAPI.getAll().then((books) => {
-      books.sort(sortBy('title'));
-      this.setState({ books });
-    });
+    // BooksAPI.getAll().then((books) => {
+    //   books.sort(sortBy('title'));
+    //   this.setState({ books });
+    // });
   }
 
   render() {
