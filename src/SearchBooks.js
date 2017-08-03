@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import BookItem from './BookItem';
 
 const SearchBooks = (props) => {
-  const { books, bookShelves, shelfOptions } = props;
+  const { books, shelfOptions } = props;
   return (
     <div className="list-books">
       <div className="list-books-title">
@@ -11,23 +11,16 @@ const SearchBooks = (props) => {
       </div>
       <div className="list-books-content">
         <div>
-          {bookShelves(books).map(shelf => (
-            <div key={shelf.key} className="bookshelf">
-              <h2 className="bookshelf-title">{shelf.text}</h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                  {shelf.books.map(book => (
-                    <BookItem
-                      key={book.id}
-                      book={book}
-                      shelfOptions={shelfOptions}
-                      onChangeBookShelf={props.onChangeBookShelf}
-                    />
-                  ))}
-                </ol>
-              </div>
-            </div>
-          ))}
+          <ol className="books-grid">
+            {books.map(book => (
+              <BookItem
+                key={book.id}
+                book={book}
+                shelfOptions={shelfOptions}
+                onChangeBookShelf={props.onChangeBookShelf}
+              />
+            ))}
+          </ol>
         </div>
       </div>
     </div>
@@ -37,7 +30,7 @@ const SearchBooks = (props) => {
 SearchBooks.propTypes = {
   books: PropTypes.arrayOf(PropTypes.object),
   shelfOptions: PropTypes.func.isRequired,
-  bookShelves: PropTypes.func.isRequired,
+  onChangeBookShelf: PropTypes.func.isRequired,
 };
 
 SearchBooks.defaultProps = {
