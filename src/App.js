@@ -57,7 +57,9 @@ class BooksApp extends React.Component {
       if (searchResults.error || searchResults.items) {
         return;
       }
-      this.setState({ searchResults });
+      if (searchResults !== this.state.searchResults) {
+        this.setState({ searchResults });
+      }
     });
   };
 
