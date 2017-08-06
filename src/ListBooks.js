@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import BookItem from './BookItem';
 
 const ListBooks = (props) => {
-  const { books, bookShelves, shelfOptions } = props;
+  const { books, bookShelves, shelfOptions, onChangeBookShelf } = props;
 
   return (
     <div className="list-books">
@@ -20,10 +20,10 @@ const ListBooks = (props) => {
                 <ol className="books-grid">
                   {shelf.books.map(book => (
                     <BookItem
-                      key={book.id}
+                      key={`${book.id}-${Math.random()}`}
                       book={book}
                       shelfOptions={shelfOptions}
-                      onChangeBookShelf={props.onChangeBookShelf}
+                      onChangeBookShelf={onChangeBookShelf}
                     />
                   ))}
                 </ol>

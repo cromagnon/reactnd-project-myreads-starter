@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import BookItem from './BookItem';
 
 const SearchBooks = (props) => {
-  const { books, shelfOptions } = props;
+  const { books, shelfOptions, onChangeBookShelf } = props;
   return (
     <div className="list-books">
       <div className="list-books-title">
@@ -14,10 +14,10 @@ const SearchBooks = (props) => {
           <ol className="books-grid">
             {books.map(book => (
               <BookItem
-                key={book.id}
+                key={`${book.id}-${Math.random()}`}
                 book={book}
                 shelfOptions={shelfOptions}
-                onChangeBookShelf={props.onChangeBookShelf}
+                onChangeBookShelf={onChangeBookShelf}
               />
             ))}
           </ol>
