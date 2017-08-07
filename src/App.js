@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import sortBy from 'sort-by';
+import DebounceInput from 'react-debounce-input';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
 import ListBooks from './ListBooks';
@@ -136,7 +137,8 @@ class BooksApp extends React.Component {
                   Close
                 </Link>
                 <div className="search-books-input-wrapper">
-                  <input
+                  <DebounceInput
+                    debounceTimeout={300}
                     type="text"
                     value={query}
                     autoFocus
